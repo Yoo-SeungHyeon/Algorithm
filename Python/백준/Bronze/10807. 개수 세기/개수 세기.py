@@ -1,0 +1,5 @@
+N = int(input())
+get_num = input().split()
+target = input()
+count = get_num.count(target)
+print(count)
