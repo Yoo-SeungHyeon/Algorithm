@@ -3,7 +3,7 @@ from collections import deque
 direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
 
-# start point 찾기
+# 각 열의 첫 번째 non-zero 블록의 좌표를 찾는 함수
 def search_start(blocks):
     start_result = []
     for col_idx, col in enumerate(zip(*blocks)):
@@ -17,7 +17,10 @@ def search_start(blocks):
             start_result.append((None, col_idx))
     return start_result
 
+
+# 블록 폭발 및 중력 적용 함수
 def expolosion(blocks, point):
+    # blocks의 깊은 복사 (원본 손상을 방지)
     new_blocks = [row[:] for row in blocks]
     H = len(new_blocks)
     W = len(new_blocks[0])
@@ -25,7 +28,7 @@ def expolosion(blocks, point):
     queue = deque([point])
     while queue:
         h, w, value = queue.popleft()
-        new_blocks[h][w] = 0 
+        new_blocks[h][w] = 0  
         for v in range(1, value):
             for dx, dy in direction:
                 nh, nw = h + dx * v, w + dy * v
@@ -44,12 +47,15 @@ def expolosion(blocks, point):
         for row in range(H):
             if new_blocks[row][col] != 0:
                 stack.append(new_blocks[row][col])
+        # 바닥부터 채우기
         row = H - 1
         while stack:
             new_grid[row][col] = stack.pop()
             row -= 1
     return new_grid
 
+
+# 남은 블록 개수 세기
 def count_block(blocks):
     count = 0
     for row in blocks:
@@ -58,8 +64,11 @@ def count_block(blocks):
                 count += 1
     return count
 
+
+# DFS로 모든 경우의 수 탐색
 def DFS(blocks, num):
     global results
+    # 남은 블록이 없으면 바로 결과 갱신 후 종료
     if count_block(blocks) == 0:
         results = 0
         return
@@ -70,6 +79,7 @@ def DFS(blocks, num):
 
     st_points = search_start(blocks)
     for st in st_points:
+        # 시작 좌표가 None이거나, 범위를 벗어나면 건너뛰기
         if st[0] is None or st[0] >= len(blocks):
             continue
         if blocks[st[0]][st[1]] == 0:
