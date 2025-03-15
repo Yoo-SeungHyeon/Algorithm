@@ -5,7 +5,7 @@ for tc in range(1, T+1):
     for _ in range(N):
         x, y, m, e = map(int, input().split())
         elements.append([x*2, y*2, m, e])
- 
+
     result = 0
     # 2000번 반복
     for _ in range(4000):
@@ -20,7 +20,7 @@ for tc in range(1, T+1):
             if move_way == 1: elements[i][1] -= 1
             if move_way == 2: elements[i][0] -= 1
             if move_way == 3: elements[i][0] += 1
- 
+
             # map_dict에 등록 하면서 중복 확인
             position = (elements[i][0], elements[i][1])
             if map_dict.get(position) == None:
